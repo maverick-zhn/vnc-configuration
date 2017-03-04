@@ -29,7 +29,7 @@ echo $DISPLAY
 ### 4.2) Edit configuration file
 Replace all instances of **<USER>** with the username that will run the VNC desktop
 ```
-ExecStart=/sbin/runuser -l vnuser -c "/usr/bin/vncserver %i"
+ExecStart=/sbin/runuser -l maverick -c "/usr/bin/vncserver %i"
 PIDFile=/home/vncuser/.vnc/%H%i.pid
 ```
 
@@ -45,7 +45,7 @@ PIDFile=/home/vncuser/.vnc/%H%i.pid
 
 ## 7.) Start Service
 ```
-# systemctl start vncserver@:3.service
+# systemctl start vncserver@:0.service
 ```
 
 # VNC Clients
@@ -65,10 +65,10 @@ PIDFile=/home/vncuser/.vnc/%H%i.pid
 ```
 # netstat -an | grep 'LISTEN'
 ```
-* If VNC Server Application Porst are open, then try from VNC client.
+* If VNC Server application ports are open, then try from VNC client.
 
 # Troubleshouting
-I have found the following problems. I have include all the fixes for those.
+I have found the some problems. In addition, I have included all the fixes for those.
 
 ## Disabled Ethernet Device
  Manually enable Ethernet Device [3]
@@ -76,7 +76,7 @@ I have found the following problems. I have include all the fixes for those.
  sudo ifup <ethernet device>
  ```
 
-## I couldn't connect from VNC-**client**
+## I couldn't connect from VNC-**client** [Oracle Linux Client-Node]
 * Use ICMP to determine if VNC-Server is reachable [ping vnc-server].
 * In the case that vnc-server is up, scan open ports in the server:
 ```
@@ -106,6 +106,26 @@ Opening ports [2]
 # firewall-cmd --zone=zone --add-service=vnc-server --permanent
 # firewall-cmd --zone=zone --add-port=<PORT_NUMBER>/tcp
 # firewall-cmd --zone=zone --add-port=<PORT_NUMBER>/tcp --permanent
+```
+
+Example
+```
+sudo firewall-cmd --get-zones
+```
+Results
+```
+work drop internal external trusted home dmz public block
+```
+
+Adding rules to the firewall
+```
+[maverick@localhost .vnc]$ sudo firewall-cmd --zone=trusted --add-service=vnc-server
+success
+[maverick@localhost .vnc]$ sudo firewall-cmd --zone=trusted --add-service=vnc-server --permanent
+[maverick@localhost .vnc]$ sudo firewall-cmd --zone=trusted --add-port=5904/tcp
+success
+[maverick@localhost .vnc]$ sudo firewall-cmd --zone=trusted --add-port=5904/tcp --permanent
+
 ```
 
 
