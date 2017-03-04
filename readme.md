@@ -68,7 +68,7 @@ PIDFile=/home/vncuser/.vnc/%H%i.pid
 * If VNC Server application ports are open, then try from VNC client.
 
 # Troubleshouting
-I have found the some problems. In addition, I have included all the fixes for those.
+I have found some problems while configuring the VNC-Server on Oracle Linux. In addition, I have included all the fixes for those.
 
 ## Disabled Ethernet Device
  Manually enable Ethernet Device [3]
